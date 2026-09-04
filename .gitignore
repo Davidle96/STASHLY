@@ -1,0 +1,42 @@
+# Môi trường và các IDE (Trình soạn thảo)
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Các file do Hệ điều hành tự sinh ra
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Node.js (Backend & Frontend)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Các file chứa thông tin bảo mật/biến môi trường (Tuyệt đối không push)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.pem
+keys/
+secrets/
+
+# Build outputs (Kết quả sau khi build)
+dist/
+build/
+coverage/
+.next/
+out/
+
+# Ghi chú: 
+# Thư mục frontend và mobile hiện đã có sẵn file .gitignore riêng của chúng để xử lý các file đặc thù (như .dart_tool của Flutter).
+# File .gitignore ở thư mục gốc (root) này sẽ dùng để bao quát chung cho IDE, hệ điều hành và backend.
