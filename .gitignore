@@ -40,3 +40,5 @@ out/
 # Ghi chú: 
 # Thư mục frontend và mobile hiện đã có sẵn file .gitignore riêng của chúng để xử lý các file đặc thù (như .dart_tool của Flutter).
 # File .gitignore ở thư mục gốc (root) này sẽ dùng để bao quát chung cho IDE, hệ điều hành và backend.
+
+PROJECT_REPORT
