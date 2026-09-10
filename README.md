@@ -47,6 +47,8 @@ Most households store belongings in labeled plastic bins or cardboard boxes (e.g
 
 ## 🛠️ Tech Stack & Architecture
 
+<div align="center">
+
 | Tier | Technologies |
 |---|---|
 | **Mobile** | Flutter (Dart) — Android & iOS, `mobile_scanner` for barcode parsing |
@@ -56,11 +58,15 @@ Most households store belongings in labeled plastic bins or cardboard boxes (e.g
 | **Object Storage** | Cloudflare R2 / AWS S3 for item and box imagery |
 | **Deployment** | Render, Supabase/Neon PostgreSQL, Docker |
 
+</div>
+
 ---
 
 ## 💎 Pricing & Commercial Model
 
 Stashly operates on a sustainable Freemium model:
+
+<div align="center">
 
 | Feature | Free Tier | Pro Plan ($2.99/mo or $24.99/yr) |
 |---|:---:|:---:|
@@ -71,18 +77,4 @@ Stashly operates on a sustainable Freemium model:
 | **Expiration & Warranty Alerts** | ❌ | ✅ |
 | **Offline-First Sync** | Basic | Advanced Conflict Resolution |
 
----
-
-## 📁 Monorepo Structure
-
-```text
-stashly/
-├── apps/
-│   ├── mobile/        # Flutter cross-platform mobile application
-│   ├── web/           # React + TypeScript administration portal
-│   └── server/        # Node.js API engine with Prisma ORM
-├── packages/
-│   └── shared/        # Shared TypeScript interfaces and DTOs
-├── prisma/
-│   └── schema.prisma  # Database schema definitions and migrations
-└── docker-compose.yml # Local PostgreSQL and development services
+</div>
