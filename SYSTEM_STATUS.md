@@ -9,62 +9,73 @@
 ---
 
 ## 1. Tổng quan dự án (Project Overview)
-- **Tên dự án:** STASHLY
-- **Mô tả ngắn:** Hệ sinh thái ứng dụng đa nền tảng gồm Web Dashboard, Mobile App và Backend API.
-- **Cấu trúc Monorepo / Multi-project:**
+- **Tên dự án:** STASHLY (Smart Home & Personal Storage Inventory Management System)
+- **Mục tiêu:** Hệ thống quản lý lưu trữ cá nhân & gia đình thông minh. Biến các thùng đồ vật lý thành kho số tra cứu được bằng QR Code & Reverse Search.
+- **Mô hình kinh doanh:** Freemium (Free vs Pro Plan).
+- **Cấu trúc Repository:**
   ```
   STASHLY/
-  ├── backend/     # API Service (Node.js)
-  ├── frontend/    # Web App (React + Vite + TypeScript)
-  ├── mobile/      # Mobile App (Flutter)
-  └── SYSTEM_STATUS.md # File lưu trạng thái và kiến trúc hệ thống
+  ├── backend/          # API Service (Node.js, Express/Fastify, Prisma ORM, PostgreSQL)
+  ├── frontend/         # Web Dashboard (React 19, TypeScript, Vite)
+  ├── mobile/           # Mobile App (Flutter, mobile_scanner cho Android & iOS)
+  ├── README.md         # Giới thiệu sản phẩm & feature specs
+  └── SYSTEM_STATUS.md  # Ngữ cảnh kiến trúc & hiện trạng hệ thống
   ```
 
 ---
 
-## 2. Trạng thái các phân hệ (Component Status)
+## 2. Kiến trúc & Công nghệ (Tech Stack)
 
-### 2.1. Backend (`/backend`)
-- **Runtime & Ngôn ngữ:** Node.js
-- **Framework:** *Chưa khởi tạo* (hiện tại mới chỉ có `package.json` trắng)
-- **Database & ORM đề xuất:** Chưa cài đặt (Đang ở giai đoạn quyết định Schema / Tech stack)
-- **Hiện trạng code:**
-  - `package.json` cơ bản (`"version": "1.0.0"`).
-- **Việc cần làm tiếp theo:**
-  1. Thống nhất cơ sở dữ liệu (PostgreSQL / MySQL / MongoDB).
-  2. Chọn framework (NestJS / Express / Fastify) và ORM (Prisma / Drizzle).
-  3. Thiết kế bảng dữ liệu và tạo Migration đầu tiên.
-
-### 2.2. Frontend (`/frontend`)
-- **Runtime & Công nghệ:** React 19 + TypeScript + Vite 8
-- **Styling:** CSS mặc định / Vanilla CSS (chưa tích hợp design system cụ thể)
-- **Routing & State:** Chưa cài đặt
-- **Hiện trạng code:**
-  - Khung chuẩn của Vite React TypeScript (`App.tsx`, `main.tsx`, `index.css`).
-- **Việc cần làm tiếp theo:**
-  1. Cấu hình theme/styling theo quy chuẩn giao diện.
-  2. Tích hợp Axios/Fetch client kết nối Backend API khi API sẵn sàng.
-
-### 2.3. Mobile (`/mobile`)
-- **Framework & Ngôn ngữ:** Flutter (Dart SDK `^3.11.4`)
-- **Platform hỗ trợ:** Android, iOS
-- **State Management:** Chưa cài đặt (đề xuất: Bloc / Riverpod / Provider)
-- **Hiện trạng code:**
-  - Template Counter mặc định của Flutter (`lib/main.dart`).
-- **Việc cần làm tiếp theo:**
-  1. Lựa chọn thư viện quản lý State & Http Client (Dio).
-  2. Dựng luồng màn hình UI theo business flow.
+| Phân hệ | Công nghệ chính | Mục đích & Thư viện chủ đạo |
+|---|---|---|
+| **Database** | PostgreSQL | Quan hệ dữ liệu chặt chẽ, Full-text Search, Relational Integrity |
+| **Backend** | Node.js, Prisma ORM, Express/Fastify | RESTful API, sinh Type-safe models, Auth JWT, Quản lý nghiệp vụ |
+| **Web Frontend** | React 19, TypeScript, Vite | Web Dashboard quản lý kho đồ, in tem nhãn QR code PDF hàng loạt |
+| **Mobile App** | Flutter (Dart SDK ^3.11.4) | Scan QR xem nhanh đồ bên trong hộp (Scan-to-Peek), chụp ảnh, tìm kiếm |
+| **Storage** | Cloudflare R2 / S3 (Dự kiến) | Lưu trữ hình ảnh đồ đạc và container |
 
 ---
 
-## 3. Bản đồ Dữ liệu & Nghiệp vụ (Data & Business Models)
-*(Sẽ được cập nhật chi tiết ngay khi thiết kế schema database hoàn tất)*
+## 3. Bản đồ Nghiệp vụ & Data Model (Hierarchy)
 
-- **Entities chính (Dự kiến):**
-  - `User`: Quản lý tài khoản, xác thực, phân quyền.
-  - *(Đang chờ định nghĩa nghiệp vụ chi tiết của Stashly từ người dùng)*.
+Luồng phân cấp dữ liệu vật lý:
+```
+Household (Gia đình/Tổ chức)
+  └── Storage Area (Vị trí/Khu vực: vd Kệ ban công, Phòng kho)
+        └── Container / Box (Hộp chứa có mã QR: vd BOX-001)
+              └── Item (Vật dụng: Tên, Mô tả, Số lượng, Ảnh, Tags)
+```
+
+### Các Entities chính dự kiến:
+1. **User:** ID, email, passwordHash, fullName, avatarUrl, createdAt.
+2. **Household:** ID, name, plan (`FREE` | `PRO`), createdAt.
+3. **HouseholdMember:** userId, householdId, role (`OWNER` | `ADMIN` | `MEMBER` | `VIEWER`).
+4. **StorageArea:** ID, householdId, name, description.
+5. **Container (Box):** ID, code (vd `BOX-001`), qrCodeHash, storageAreaId, name, description, isLocked.
+6. **Item:** ID, containerId, name, description, quantity, imageUrl, tags, expiryDate, warrantyDate.
+7. **ActivityLog / Audit:** Ghi lại lịch sử ai thêm, sửa, di chuyển đồ vật nào giữa các hộp.
 
 ---
 
-## 4. Nhật ký cập nhật hệ thống (System Changelog)
-- **2026-09-18:** Khởi tạo file `SYSTEM_STATUS.md`. Dự án hiện ở trạng thái khởi tạo scaffold cho cả 3 phân hệ `backend`, `frontend`, và `mobile`.
+## 4. Trạng thái hiện tại các phân hệ (Component Status)
+
+### 4.1. Backend (`/backend`)
+- **Trạng thái:** Đã khởi tạo `package.json`.
+- **Việc cần làm tiếp:**
+  1. Cài đặt TypeScript, Express (hoặc Fastify), Prisma, dotenv, cors, bcrypt, jsonwebtoken.
+  2. Viết file `schema.prisma` chuẩn hóa các entities trên.
+  3. Tạo migration đầu tiên kết nối PostgreSQL.
+
+### 4.2. Frontend (`/frontend`)
+- **Trạng thái:** Khung chuẩn React 19 + TypeScript + Vite 8.
+- **Việc cần làm tiếp:** Xây dựng Design system & Dashboard xem danh sách Container/Item.
+
+### 4.3. Mobile (`/mobile`)
+- **Trạng thái:** Khung chuẩn Flutter 3.x.
+- **Việc cần làm tiếp:** Tích hợp `mobile_scanner` để quét QR, dựng luồng màn hình Scan & Search.
+
+---
+
+## 5. Nhật ký cập nhật hệ thống (System Changelog)
+- **2026-09-18 (Lần 1):** Khởi tạo `SYSTEM_STATUS.md`.
+- **2026-09-18 (Lần 2):** Đồng bộ chi tiết nghiệp vụ quản lý kho thông minh (Household -> Area -> Box -> Item) và tech stack (PostgreSQL + Prisma + Node.js + Flutter + React) từ `README.md`. Bỏ file khỏi `.gitignore` để lưu trữ trên GitHub.
