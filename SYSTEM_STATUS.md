@@ -26,13 +26,13 @@
 
 ## 2. Kiến trúc & Công nghệ (Tech Stack)
 
-| Phân hệ | Công nghệ chính | Mục đích & Thư viện chủ đạo |
-|---|---|---|
-| **Database** | PostgreSQL | Quan hệ dữ liệu chặt chẽ, Full-text Search, Relational Integrity |
-| **Backend** | Node.js, Prisma ORM, Express/Fastify | RESTful API, sinh Type-safe models, Auth JWT, Quản lý nghiệp vụ |
-| **Web Frontend** | React 19, TypeScript, Vite | Web Dashboard quản lý kho đồ, in tem nhãn QR code PDF hàng loạt |
-| **Mobile App** | Flutter (Dart SDK ^3.11.4) | Scan QR xem nhanh đồ bên trong hộp (Scan-to-Peek), chụp ảnh, tìm kiếm |
-| **Storage** | Cloudflare R2 / S3 (Dự kiến) | Lưu trữ hình ảnh đồ đạc và container |
+| Component         | Công nghệ chính                      | Mục đích & Thư viện chủ đạo                                           |
+|-------------------|--------------------------------------|-----------------------------------------------------------------------|
+| **Database**      | PostgreSQL                           | Quan hệ dữ liệu chặt chẽ, Full-text Search, Relational Integrity      |
+| **Backend**       | Node.js, Prisma ORM, Express/Fastify | RESTful API, sinh Type-safe models, Auth JWT, Quản lý nghiệp vụ       |
+| **Web Frontend**  | React 19, TypeScript, Vite           | Web Dashboard quản lý kho đồ, in tem nhãn QR code PDF hàng loạt       |
+| **Mobile App**    | Flutter (Dart SDK ^3.11.4)           | Scan QR xem nhanh đồ bên trong hộp (Scan-to-Peek), chụp ảnh, tìm kiếm |
+| **Storage**       | Cloudflare R2 / S3 (Dự kiến)         | Lưu trữ hình ảnh đồ đạc và container                                  |
 
 ---
 
